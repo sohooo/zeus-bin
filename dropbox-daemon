@@ -1,0 +1,9 @@
+#!/bin/bash
+
+bin=~/.dropbox-dist/dropboxd
+log=~/log/dropbox.log
+echo "starting dropbox daemon..."
+echo "logfile: $log"
+
+nohup $bin > $log 2>&1  &
+

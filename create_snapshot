@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -ex
+
+name=$1
+fs="zdata/$name"
+
+
+if [[ -x "$name" ]]; then
+	echo "which FS? /zdata/<FS>"
+	sudo zfs list
+	exit 1
+fi
+
+if [[ ! -d /$fs ]]; then
+	echo "$fs not found"
+	exit 2
+fi
+
+sudo zfs snapshot -r $fs@$(date '+%F')
+sudo zfs list -rt all $fs
+echo "finished."
+

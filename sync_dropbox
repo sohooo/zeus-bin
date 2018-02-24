@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -ex
+
+# +----------------------------------+
+# | Lightroom Catalog Sync           |
+# +----------------------------------+
+#
+#   creates zfs snapshot and
+#   syncs Dropbox directory
+
+# +----------------------------------+
+# source
+source=~/Dropbox
+
+# dest
+zfsphotos=/zdata/photos/dropbox
+# +----------------------------------+
+
+# script env
+home_path=/home/zeus
+script_home="$( cd "$(dirname "$0")" ; pwd -P )"
+logfile=${home_path}/log/sync_dropbox.log
+timestamp=$(date '+%F')
+
+
+# log this sync job, and continue running
+# in the background, even if shell is closed
+echo "logfile: $logfile"
+exec > >(tee $logfile) 2>&1
+echo "[$timestamp] starting sync_dropbox script"
+
+test -d $source || (echo "source catalog not found" && exit 1)
+
+# create snapshot for today
+zfs snapshot -r zdata/photos@$timestamp
+zfs list -rt all zdata/photos
+
+# sync data
+rsync -av --stats --delete-after $source $zfsphotos
+

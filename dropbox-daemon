@@ -2,8 +2,9 @@
 
 bin=~/.dropbox-dist/dropboxd
 log=~/log/dropbox.log
-echo "starting dropbox daemon..."
-echo "logfile: $log"
+touch $log
+echo ">> starting dropbox daemon... $(date)" | tee -a $log
+echo ">> logfile: $log" | tee -a $log
 
 nohup $bin > $log 2>&1  &
 

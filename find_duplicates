@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -ex
+
+name=$1
+
+if [[ -z "$name" ]]; then
+	echo "where should I look for dups? give me a path"
+	echo "$0 /zdata/dropbox/Kamera-Uploads/"
+	exit 1
+fi
+
+if [[ ! -d $name ]]; then
+	echo "$name is not a path"
+	exit 2
+fi
+
+echo "looking for dups in: $name"
+$HOME/rmlint/rmlint --progress $name
+

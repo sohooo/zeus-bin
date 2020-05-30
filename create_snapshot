@@ -6,7 +6,7 @@ name=$1
 fs="zdata/$name"
 
 
-if [[ -x "$name" ]]; then
+if [[ -z "$name" ]]; then
 	echo "which FS? /zdata/<FS>"
 	sudo zfs list
 	exit 1
